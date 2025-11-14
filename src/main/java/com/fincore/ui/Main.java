@@ -5,6 +5,7 @@ import com.fincore.models.SavingsAccount;
 import com.fincore.models.Customer;
 import com.fincore.models.Bank;
 import com.fincore.models.InsufficientFundsException;
+import com.fincore.services.BankingService;
 
 import java.util.Scanner;
 
@@ -117,10 +118,13 @@ public class Main {
                 handleAddAccount();
                 break;
             case 4:
+                handleTransferBetweenAccounts();
+                break;
+            case 5:
                 currentCustomer = null; // Logout
                 System.out.println("Logged out successfully.");
                 break;
-            case 5:
+            case 6:
                 return false; // Exit
             default:
                 System.out.println("Invalid choice. Please try again.");
@@ -152,8 +156,9 @@ public class Main {
         System.out.println("1. Account Operations");
         System.out.println("2. View Account Summary");
         System.out.println("3. Add New Account");
-        System.out.println("4. Logout");
-        System.out.println("5. Exit");
+        System.out.println("4. Transfer Between Accounts");
+        System.out.println("5. Logout");
+        System.out.println("6. Exit");
         System.out.print("Please select an option (1-5): ");
     }
     
@@ -251,6 +256,45 @@ public class Main {
         } else {
             System.out.println("Error adding account. Please try again.");
         }
+    }
+
+    private static void handleTransferBetweenAccounts() {
+        if (currentCustomer.getAccountCount() < 2) {
+            System.out.println("At least two accounts are required to perform a transfer.");
+            return;
+        }
+
+        // Display available accounts
+        System.out.println("=== Available Accounts ===");
+        for (int i = 0; i < currentCustomer.getAccountCount(); i++) {
+            Account account = currentCustomer.getAccount(i);
+            System.out.println((i + 1) + ". " + account.getClass().getSimpleName() +
+                    " - Balance: $" + String.format("%.2f", account.getBalance()));
+        }
+
+        System.out.print("Select account to transfer from (1-" + currentCustomer.getAccountCount() + "): ");
+        int senderAccountIndex = getUserChoice() - 1;
+        if (senderAccountIndex < 0 || senderAccountIndex >= currentCustomer.getAccountCount()) {
+            System.out.println("Invalid account selection.");
+            return;
+        }
+
+        System.out.print("\nSelect account to transfer to (1-" + currentCustomer.getAccountCount() + "): ");
+        int recipientAccountIndex = getUserChoice() - 1;
+        if (recipientAccountIndex < 0 || recipientAccountIndex >= currentCustomer.getAccountCount()) {
+            System.out.println("Invalid account selection.");
+            return;
+        }
+
+        System.out.print("\n\nEnter amount to transfer: $");
+        while (!scanner.hasNextDouble()) {
+            System.out.print("Please enter a valid amount: $");
+            scanner.next();
+        }
+        double withdrawAmount = scanner.nextDouble();
+        Account senderAccount = currentCustomer.getAccount(senderAccountIndex);
+        Account recipientAccount = currentCustomer.getAccount(recipientAccountIndex);
+        BankingService.transferBetweenCustomerAccounts(senderAccount, recipientAccount, withdrawAmount);
     }
     
     /**
