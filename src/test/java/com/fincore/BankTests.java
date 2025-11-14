@@ -14,7 +14,7 @@ public class BankTests {
     @DisplayName("Bank Add Customer: allows usage of both '.addCustomer' methods")
     public void testBankAddCustomer_allowsUsageOfBothAddCustomerMethods() {
         Bank bank = new Bank();
-        Customer customer1 = bank.addCustomer("CUST_TEST_0002", "Test User 2");
+        Customer customer1 = bank.addCustomer("CUST0001", "Test User 2");
         Assertions.assertNotNull(customer1);
         Customer customer2 = bank.addCustomer("Test User 1");
         Assertions.assertNotNull(customer2);
