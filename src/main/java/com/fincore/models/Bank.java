@@ -3,6 +3,7 @@ package com.fincore.models;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Bank class representing the main banking system that manages all customers.
@@ -152,7 +153,7 @@ public class Bank {
      * @return a unique customer ID string
      */
     private String generateCustomerId() {
-        return "CUST" + String.format("%04d", nextCustomerId++);
+        return UUID.randomUUID().toString();
     }
     
     /**
