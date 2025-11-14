@@ -291,10 +291,10 @@ public class Main {
             System.out.print("Please enter a valid amount: $");
             scanner.next();
         }
-        double withdrawAmount = scanner.nextDouble();
+        double transferAmount = scanner.nextDouble();
         Account senderAccount = currentCustomer.getAccount(senderAccountIndex);
         Account recipientAccount = currentCustomer.getAccount(recipientAccountIndex);
-        BankingService.transferBetweenCustomerAccounts(senderAccount, recipientAccount, withdrawAmount);
+        BankingService.transferBetweenCustomerAccounts(senderAccount, recipientAccount, transferAmount);
     }
     
     /**

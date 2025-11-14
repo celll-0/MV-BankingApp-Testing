@@ -41,6 +41,11 @@ public class BankingService {
                 System.out.println("Transfer failed: cannot transfer to the same account.");
                 return false;
             }
+
+            if(amount <= 0) {
+                System.out.println("Transfer failed: transfer amount cannot be zero or below.");
+                return false;
+            }
             // Withdraw from sender
             try {
                 fromAccount.withdraw(amount);

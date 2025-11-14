@@ -40,11 +40,20 @@ public class BankingServiceTests {
     }
 
     @Test
-    @DisplayName("Banking Service Between Accounts Transfer: rejects transfer is sender has insufficient funds")
+    @DisplayName("Banking Service Between Accounts Transfer: rejects transfer if sender has insufficient funds")
     public void testBankingServiceTransfer_rejectSenderInsufficientFunds() {
         double transferAmount = 200.0;
         double senderInitialAmount = 100.0;
         Account sender = new Account("Charlie", senderInitialAmount);
+        Account receiver = new Account("Charlie", 500.0);
+        Assertions.assertFalse(BankingService.transferBetweenCustomerAccounts(sender, receiver, transferAmount));
+    }
+
+    @Test
+    @DisplayName("Banking Service Between Accounts Transfer: rejects transfer amount of zero")
+    public void testBankingServiceTransfer_rejectZeroTransferAmount() {
+        double transferAmount = 0;
+        Account sender = new Account("Charlie", 100.0);
         Account receiver = new Account("Charlie", 500.0);
         Assertions.assertFalse(BankingService.transferBetweenCustomerAccounts(sender, receiver, transferAmount));
     }
