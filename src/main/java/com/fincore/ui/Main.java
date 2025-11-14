@@ -31,10 +31,10 @@ public class Main {
         System.out.println("Welcome to FinCore CLI Banking!");
         System.out.println("Your trusted partner in financial management.");
         System.out.println();
-        
+
         // Add some sample customers for demonstration
         initializeSampleData();
-        
+
         // Main application loop
         boolean running = true;
         while (running) {
@@ -233,7 +233,12 @@ public class Main {
             }
             double interestRate = scanner.nextDouble() / 100.0; // Convert percentage to decimal
             scanner.nextLine(); // Consume newline
-            newAccount = new SavingsAccount(currentCustomer.getName(), initialBalance, interestRate);
+            try {
+                newAccount = new SavingsAccount(currentCustomer.getName(), initialBalance, interestRate);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                newAccount = null;
+            }
         } else {
             System.out.println("Invalid account type selected.");
             return;

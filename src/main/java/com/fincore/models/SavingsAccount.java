@@ -22,7 +22,7 @@ public class SavingsAccount extends Account {
      */
     public SavingsAccount(String accountHolder, double initialBalance, double interestRate) {
         super(accountHolder, initialBalance);
-        this.interestRate = interestRate;
+        this.setInterestRate(interestRate);
     }
     
     /**
@@ -42,6 +42,8 @@ public class SavingsAccount extends Account {
     public void setInterestRate(double interestRate) {
         if (interestRate >= 0) {
             this.interestRate = interestRate;
+        } else {
+            throw new IllegalArgumentException("Interest rate cannot be negative.");
         }
     }
     
